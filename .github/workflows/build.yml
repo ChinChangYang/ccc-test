@@ -31,7 +31,21 @@ jobs:
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
           fi
+      - name: Print PATH
+        shell: bash
+        run: echo $PATH
+      - name: List LLVM directory
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            ls "C:/Program Files/LLVM/bin"
+          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+            ls /usr/lib/llvm/bin
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            ls /usr/local/opt/llvm/bin
+          fi
       - name: Build
+        shell: bash
         run: |
           g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
 
