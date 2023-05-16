@@ -1,0 +1,28 @@
+name: Build and Test
+
+on:
+  push:
+    paths:
+      - 'src/ccc/ccc.cpp'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            choco install llvm
+          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get install llvm
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            brew install llvm
+          fi
+      - name: Build
+        run: |
+          g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
+
