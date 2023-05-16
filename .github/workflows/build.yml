@@ -18,9 +18,16 @@ jobs:
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             choco install llvm
           elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            sudo apt-get install llvm
+            sudo apt-get install llvm clang libclang-dev
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install llvm
+          fi
+      - name: Set up LLVM
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            echo "/usr/lib/llvm/bin" >> $GITHUB_PATH
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
           fi
       - name: Build
         run: |
