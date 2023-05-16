@@ -27,12 +27,6 @@ jobs:
           if [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
           fi
-      - name: Print LLVM directory
-        shell: bash
-        run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            ls "C:/Program Files/LLVM"
-          fi
       - name: Build
         shell: bash
         run: |
@@ -41,4 +35,9 @@ jobs:
           else
             g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
           fi
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ccc-program
+          path: ./ccc
 
