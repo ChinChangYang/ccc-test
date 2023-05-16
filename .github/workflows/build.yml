@@ -38,6 +38,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ccc-program
+          name: ccc-${{ matrix.os }}
           path: ./ccc
 
