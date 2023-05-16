@@ -5,7 +5,6 @@
 #include <cstring>
 #include <algorithm>
 
-
 const std::vector<CXCursorKind> decision_kinds = {
     CXCursor_IfStmt, CXCursor_ForStmt, CXCursor_WhileStmt, CXCursor_DefaultStmt, CXCursor_CaseStmt
 };
