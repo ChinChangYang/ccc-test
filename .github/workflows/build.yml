@@ -24,6 +24,7 @@ jobs:
             brew install llvm
           fi
       - name: Set up LLVM
+        shell: bash
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
             echo "/usr/lib/llvm/bin" >> $GITHUB_PATH
