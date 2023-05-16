@@ -16,9 +16,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            choco install llvm
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
             sudo apt-get install llvm clang libclang-dev
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             brew install llvm
@@ -26,26 +24,15 @@ jobs:
       - name: Set up LLVM
         shell: bash
         run: |
-          if [[ "$RUNNER_OS" == "Linux" ]]; then
-            echo "/usr/lib/llvm/bin" >> $GITHUB_PATH
-          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
             echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
-          fi
-      - name: Print PATH
-        shell: bash
-        run: echo $PATH
-      - name: List LLVM directory
-        shell: bash
-        run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            ls "C:/Program Files/LLVM/bin"
-          elif [[ "$RUNNER_OS" == "Linux" ]]; then
-            ls /usr/lib/llvm/bin
-          elif [[ "$RUNNER_OS" == "macOS" ]]; then
-            ls /usr/local/opt/llvm/bin
           fi
       - name: Build
         shell: bash
         run: |
-          g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            clang++ src/ccc/ccc.cpp -o ccc --target=x86_64-pc-windows-gnu
+          else
+            g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
+          fi
 
