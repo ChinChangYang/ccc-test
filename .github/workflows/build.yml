@@ -32,8 +32,9 @@ jobs:
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             g++ src/ccc/ccc.cpp -o ccc -std=c++17 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -lclang -I "/c/Program Files/LLVM/include" -L "/c/Program Files/LLVM/lib"
+            ls ccc*
           else
-            g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs)
+            g++ src/ccc/ccc.cpp -o ccc $(llvm-config --cxxflags) $(llvm-config --ldflags) -lclang $(llvm-config --libs --system-libs) -static-libstdc++ -static-libgcc
           fi
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
